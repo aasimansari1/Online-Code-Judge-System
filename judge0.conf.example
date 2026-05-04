@@ -1,0 +1,17 @@
+# Copy to judge0.conf before running docker-compose.judge0.yml.
+# Full reference: https://github.com/judge0/judge0/blob/master/judge0.conf
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+POSTGRES_DB=judge0
+POSTGRES_USER=judge0
+POSTGRES_PASSWORD=changeme
+
+REDIS_HOST=redis
+REDIS_PORT=6379
+REDIS_PASSWORD=
+
+ENABLE_WAIT_RESULT=true
+MAX_QUEUE_SIZE=200
+MAX_CPU_TIME_LIMIT=15
+MAX_MEMORY_LIMIT=512000
+ALLOW_ENABLE_NETWORK=false

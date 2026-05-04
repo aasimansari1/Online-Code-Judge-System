@@ -1,0 +1,45 @@
+# Optional: spin up a self-hosted Judge0 stack locally so you don't need a
+# RapidAPI key. After `docker compose -f docker-compose.judge0.yml up -d`,
+# set in backend/.env:
+#   EXECUTION_ENGINE=judge0
+#   JUDGE0_URL=http://localhost:2358
+#   JUDGE0_RAPIDAPI_KEY=          (leave empty)
+# Source: https://github.com/judge0/judge0
+
+services:
+  server:
+    image: judge0/judge0:1.13.1
+    ports: ["2358:2358"]
+    privileged: true
+    volumes:
+      - ./judge0.conf:/judge0.conf:ro
+    depends_on: [db, redis]
+    restart: unless-stopped
+
+  workers:
+    image: judge0/judge0:1.13.1
+    command: ["./scripts/workers"]
+    privileged: true
+    volumes:
+      - ./judge0.conf:/judge0.conf:ro
+    depends_on: [db, redis]
+    restart: unless-stopped
+
+  db:
+    image: postgres:13.0
+    env_file: ./judge0.conf
+    volumes:
+      - judge0_pg:/var/lib/postgresql/data/
+    restart: unless-stopped
+
+  redis:
+    image: redis:6.0
+    command:
+      - bash
+      - -c
+      - 'docker-entrypoint.sh --appendonly no'
+    env_file: ./judge0.conf
+    restart: unless-stopped
+
+volumes:
+  judge0_pg:

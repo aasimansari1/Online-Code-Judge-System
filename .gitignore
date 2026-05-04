@@ -1,0 +1,11 @@
+node_modules/
+.env
+.env.local
+.DS_Store
+*.log
+.next/
+out/
+build/
+backend/src/data/store/*.json
+!backend/src/data/store/.gitkeep
+judge0.conf
